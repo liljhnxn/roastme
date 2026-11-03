@@ -1,0 +1,114 @@
+import hre from "hardhat";
+const { ethers } = hre;
+import * as fs from "fs";
+import * as path from "path";
+
+async function main() {
+  console.log("--------------------------------------------------");
+  console.log("🚀 Starting RoastMe Deployment to Botchain Testnet");
+  console.log("--------------------------------------------------");
+
+  const [deployer] = await ethers.getSigners();
+  if (!deployer) {
+    throw new Error("No deployer account found! Check PRIVATE_KEY in .env.local");
+  }
+
+  console.log("Deployer Address:", deployer.address);
+  const balance = await ethers.provider.getBalance(deployer.address);
+  console.log("Deployer Balance:", ethers.formatEther(balance), "BOHR");
+
+  if (balance === 0n) {
+    console.warn("⚠️ Warning: Deployer balance is 0 BOHR. Make sure you have testnet funds.");
+  }
+
+  console.log("\nDeploying RoastMe contract...");
+  const RoastMeFactory = await ethers.getContractFactory("RoastMe");
+  const roastMe = await RoastMeFactory.deploy();
+  await roastMe.waitForDeployment();
+
+  const contractAddress = await roastMe.getAddress();
+  const deploymentTx = roastMe.deploymentTransaction();
+  console.log("✅ RoastMe successfully deployed to:", contractAddress);
+  if (deploymentTx) {
+    console.log("Transaction Hash:", deploymentTx.hash);
+  }
+
+  // Update .env.local with deployed contract address
+  const envLocalPath = path.join(process.cwd(), ".env.local");
+  if (fs.existsSync(envLocalPath)) {
+    let envContent = fs.readFileSync(envLocalPath, "utf8");
+    if (envContent.includes("NEXT_PUBLIC_CONTRACT_ADDRESS=")) {
+      envContent = envContent.replace(
+        /NEXT_PUBLIC_CONTRACT_ADDRESS=.*/,
+        `NEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`
+      );
+    } else {
+      envContent += `\nNEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
+    }
+    fs.writeFileSync(envLocalPath, envContent, "utf8");
+    console.log("✅ Updated NEXT_PUBLIC_CONTRACT_ADDRESS in .env.local");
+  }
+
+  // Export deployment info to src/contracts/deployedContract.json
+  const contractsDir = path.join(process.cwd(), "src", "contracts");
+  if (!fs.existsSync(contractsDir)) {
+    fs.mkdirSync(contractsDir, { recursive: true });
+  }
+
+  const artifactPath = path.join(
+    process.cwd(),
+    "artifacts",
+    "contracts",
+    "RoastMe.sol",
+    "RoastMe.json"
+  );
+
+  let abi = [];
+  if (fs.existsSync(artifactPath)) {
+    const artifact = JSON.parse(fs.readFileSync(artifactPath, "utf8"));
+    abi = artifact.abi;
+  }
+
+  const deploymentData = {
+    address: contractAddress,
+    network: "botchain",
+    chainId: 968,
+    abi: abi,
+    deployedAt: new Date().toISOString(),
+  };
+
+  fs.writeFileSync(
+    path.join(contractsDir, "deployedContract.json"),
+    JSON.stringify(deploymentData, null, 2)
+  );
+  console.log("✅ Exported deployment details to src/contracts/deployedContract.json");
+
+  // Attempt verification if not on local hardhat network
+  const networkName = hre.network.name;
+  if (networkName !== "hardhat" && networkName !== "localhost") {
+    console.log("\nWaiting for 5 block confirmations before verification...");
+    if (deploymentTx) {
+      await deploymentTx.wait(5);
+    }
+
+    console.log("Attempting contract verification on explorer...");
+    try {
+      await hre.run("verify:verify", {
+        address: contractAddress,
+        constructorArguments: [],
+      });
+      console.log("✅ Contract verified successfully!");
+    } catch (verifyError: any) {
+      console.log("Verification note:", verifyError?.message || verifyError);
+    }
+  }
+
+  console.log("\n🎉 Deployment workflow completed!");
+  console.log("Contract Address:", contractAddress);
+  console.log("Explorer URL:", `https://scan.bohr.life/address/${contractAddress}`);
+}
+
+main().catch((error) => {
+  console.error("❌ Deployment failed:", error);
+  process.exitCode = 1;
+});
