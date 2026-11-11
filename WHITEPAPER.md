@@ -1,8 +1,9 @@
 # 🔥 RoastMe: Decentralized Reputation & On-Chain Feedback Protocol
 ### Official Whitepaper & Project Pitch Deck
-**Version:** 1.0  
-**Network:** Botchain Testnet (Chain ID: `968`)  
-**Verified Contract:** [`0x350091F9Dc2C19a9e53cf702bD620B601d61C674`](https://scan.bohr.life/address/0x350091F9Dc2C19a9e53cf702bD620B601d61C674#code)  
+**Version:** 1.1  
+**Mainnet Network:** Botchain Mainnet (Chain ID: `677`)  
+**Mainnet Verified Contract:** [`0x2D08644ebAD640aAb1eB77148a540e47741F9738`](https://scan.botchain.ai/address/0x2D08644ebAD640aAb1eB77148a540e47741F9738#code)  
+**Testnet Verified Contract:** [`0x350091F9Dc2C19a9e53cf702bD620B601d61C674`](https://scan.bohr.life/address/0x350091F9Dc2C19a9e53cf702bD620B601d61C674#code)  
 **Repository:** [https://github.com/liljhnxn/roastme](https://github.com/liljhnxn/roastme)  
 
 ---
@@ -125,3 +126,4 @@ While RoastMe Testnet operates with zero protocol fees to encourage adoption, fu
 * **Botchain Explorer Contract Code:** [BOHR Scan Contract 0x3500...C674](https://scan.bohr.life/address/0x350091F9Dc2C19a9e53cf702bD620B601d61C674#code)
 * **GitHub Repository:** [https://github.com/liljhnxn/roastme](https://github.com/liljhnxn/roastme)
 * **License:** MIT Open Source
+

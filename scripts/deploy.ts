@@ -5,7 +5,7 @@ import * as path from "path";
 
 async function main() {
   console.log("--------------------------------------------------");
-  console.log("🚀 Starting RoastMe Deployment to Botchain Testnet");
+  console.log(`🚀 Starting RoastMe Deployment on Network: ${hre.network.name}`);
   console.log("--------------------------------------------------");
 
   const [deployer] = await ethers.getSigners();
@@ -13,30 +13,64 @@ async function main() {
     throw new Error("No deployer account found! Check PRIVATE_KEY in .env.local");
   }
 
+  const network = await ethers.provider.getNetwork();
+  const chainId = Number(network.chainId);
+  console.log("Connected Chain ID:", chainId);
   console.log("Deployer Address:", deployer.address);
+
   const balance = await ethers.provider.getBalance(deployer.address);
-  console.log("Deployer Balance:", ethers.formatEther(balance), "BOHR");
+  const feeData = await ethers.provider.getFeeData();
+  const gasPrice = feeData.gasPrice ?? ethers.parseUnits("20", "gwei");
+
+  console.log("Deployer Balance:", ethers.formatEther(balance), chainId === 677 ? "BOT" : "BOHR");
+  console.log("Network Gas Price:", ethers.formatUnits(gasPrice, "gwei"), "Gwei");
 
   if (balance === 0n) {
-    console.warn("⚠️ Warning: Deployer balance is 0 BOHR. Make sure you have testnet funds.");
+    throw new Error("Deployer balance is 0. Please fund your wallet before deploying.");
   }
 
-  console.log("\nDeploying RoastMe contract...");
   const RoastMeFactory = await ethers.getContractFactory("RoastMe");
-  const roastMe = await RoastMeFactory.deploy();
+  
+  // Estimate gas limit to avoid any excessive fee usage
+  const deployTxReq = await RoastMeFactory.getDeployTransaction();
+  const estimatedGas = await ethers.provider.estimateGas(deployTxReq);
+  const estimatedCost = estimatedGas * gasPrice;
+
+  console.log("Estimated Deployment Gas Units:", estimatedGas.toString());
+  console.log(
+    "Estimated Max Deployment Cost:",
+    ethers.formatEther(estimatedCost),
+    chainId === 677 ? "BOT" : "BOHR"
+  );
+
+  if (balance < estimatedCost) {
+    throw new Error(
+      `Insufficient funds for deployment: need approx ${ethers.formatEther(
+        estimatedCost
+      )} but have ${ethers.formatEther(balance)}`
+    );
+  }
+
+  console.log("\nDeploying RoastMe contract with optimized gas parameters...");
+  // Use exact gas price from network without inflating fees
+  const roastMe = await RoastMeFactory.deploy({
+    gasPrice: gasPrice,
+  });
   await roastMe.waitForDeployment();
 
   const contractAddress = await roastMe.getAddress();
   const deploymentTx = roastMe.deploymentTransaction();
-  console.log("✅ RoastMe successfully deployed to:", contractAddress);
+  console.log("\n✅ RoastMe successfully deployed to:", contractAddress);
   if (deploymentTx) {
     console.log("Transaction Hash:", deploymentTx.hash);
   }
 
-  // Update .env.local with deployed contract address
+  // Update .env.local with deployed contract address and mainnet settings if on chain 677
   const envLocalPath = path.join(process.cwd(), ".env.local");
   if (fs.existsSync(envLocalPath)) {
     let envContent = fs.readFileSync(envLocalPath, "utf8");
+
+    // Replace or add contract address
     if (envContent.includes("NEXT_PUBLIC_CONTRACT_ADDRESS=")) {
       envContent = envContent.replace(
         /NEXT_PUBLIC_CONTRACT_ADDRESS=.*/,
@@ -45,8 +79,25 @@ async function main() {
     } else {
       envContent += `\nNEXT_PUBLIC_CONTRACT_ADDRESS=${contractAddress}`;
     }
+
+    if (chainId === 677) {
+      // Mainnet settings
+      envContent = envContent.replace(
+        /NEXT_PUBLIC_BOTCHAIN_RPC_URL=.*/,
+        `NEXT_PUBLIC_BOTCHAIN_RPC_URL=https://rpc.botchain.ai`
+      );
+      envContent = envContent.replace(
+        /NEXT_PUBLIC_BOTCHAIN_CHAIN_ID=.*/,
+        `NEXT_PUBLIC_BOTCHAIN_CHAIN_ID=677`
+      );
+      envContent = envContent.replace(
+        /NEXT_PUBLIC_BOTCHAIN_EXPLORER=.*/,
+        `NEXT_PUBLIC_BOTCHAIN_EXPLORER=https://scan.botchain.ai`
+      );
+    }
+
     fs.writeFileSync(envLocalPath, envContent, "utf8");
-    console.log("✅ Updated NEXT_PUBLIC_CONTRACT_ADDRESS in .env.local");
+    console.log("✅ Updated .env.local with deployed address and network settings");
   }
 
   // Export deployment info to src/contracts/deployedContract.json
@@ -71,8 +122,9 @@ async function main() {
 
   const deploymentData = {
     address: contractAddress,
-    network: "botchain",
-    chainId: 968,
+    network: hre.network.name,
+    chainId: chainId,
+    transactionHash: deploymentTx?.hash,
     abi: abi,
     deployedAt: new Date().toISOString(),
   };
@@ -103,9 +155,10 @@ async function main() {
     }
   }
 
-  console.log("\n🎉 Deployment workflow completed!");
+  const explorerBase = chainId === 677 ? "https://scan.botchain.ai" : "https://scan.bohr.life";
+  console.log("\n🎉 Deployment completed!");
   console.log("Contract Address:", contractAddress);
-  console.log("Explorer URL:", `https://scan.bohr.life/address/${contractAddress}`);
+  console.log("Explorer URL:", `${explorerBase}/address/${contractAddress}`);
 }
 
 main().catch((error) => {

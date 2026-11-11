@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from "wagmi";
 import { Flame, Wallet, AlertTriangle, LogOut, ExternalLink, User, ChevronDown, CheckCircle2 } from "lucide-react";
 import { shortenAddress, getExplorerAddressUrl } from "@/lib/utils";
-import { botchainTestnet } from "@/contracts/config";
+import { activeChain } from "@/contracts/config";
 
 export function Navbar() {
   const { address, isConnected, isConnecting } = useAccount();
@@ -15,7 +15,7 @@ export function Navbar() {
   const { switchChain, isPending: isSwitching } = useSwitchChain();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const isWrongNetwork = isConnected && chainId !== botchainTestnet.id;
+  const isWrongNetwork = isConnected && chainId !== activeChain.id;
 
   const handleConnect = () => {
     // Look for injected / metamask connector
@@ -48,12 +48,12 @@ export function Navbar() {
           {/* Wrong Network Warning Pill */}
           {isWrongNetwork && (
             <button
-              onClick={() => switchChain({ chainId: botchainTestnet.id })}
+              onClick={() => switchChain({ chainId: activeChain.id })}
               disabled={isSwitching}
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs font-medium hover:bg-amber-500/25 transition-all shadow-sm"
             >
               <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
-              <span>{isSwitching ? "Switching..." : "Switch to Botchain (968)"}</span>
+              <span>{isSwitching ? "Switching..." : `Switch to ${activeChain.name}`}</span>
             </button>
           )}
 
@@ -61,7 +61,7 @@ export function Navbar() {
           {isConnected && !isWrongNetwork && (
             <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-charcoal-900 border border-subtle text-[11px] text-soft-muted">
               <span className="w-2 h-2 rounded-full bg-accent-green shadow-[0_0_8px_rgba(56,178,132,0.6)]" />
-              <span>Botchain Testnet</span>
+              <span>{activeChain.name}</span>
             </div>
           )}
 
@@ -120,7 +120,7 @@ export function Navbar() {
                     {isWrongNetwork && (
                       <button
                         onClick={() => {
-                          switchChain({ chainId: botchainTestnet.id });
+                          switchChain({ chainId: activeChain.id });
                           setMenuOpen(false);
                         }}
                         className="w-full flex items-center gap-2 px-3 py-2 text-xs rounded-lg text-amber-300 hover:bg-amber-500/10 transition-colors"
@@ -155,10 +155,10 @@ export function Navbar() {
         <div className="sm:hidden px-4 py-2 bg-amber-500/20 border-t border-amber-500/30 flex items-center justify-between text-xs text-amber-200">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Wrong network. Switch to Botchain.</span>
+            <span>Wrong network. Switch to {activeChain.name}.</span>
           </div>
           <button
-            onClick={() => switchChain({ chainId: botchainTestnet.id })}
+            onClick={() => switchChain({ chainId: activeChain.id })}
             className="px-2.5 py-1 rounded bg-amber-500 text-charcoal-950 font-semibold text-[11px]"
           >
             Switch

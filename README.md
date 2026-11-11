@@ -1,53 +1,30 @@
 # 🔥 RoastMe — On-Chain Feedback & Rating Platform
 
-RoastMe is a modern, lightweight Web3 application deployed on **Botchain Testnet**. It enables users to create on-chain profiles, share their unique links, and collect 1–5 star ratings and honest reviews directly on the blockchain.
+RoastMe is a modern, lightweight Web3 application deployed on **Botchain Mainnet** (and Botchain Testnet). It enables users to create on-chain profiles, share their unique links, and collect 1–5 star ratings and honest reviews directly on the blockchain.
 
 ---
 
-## 🚀 Features
+## 🌐 Network Configuration
 
-* **MetaMask Wallet Integration**: Smooth connection, shortened address display, network validation, and automated network switching to Botchain Testnet.
-* **On-Chain Profiles**:
-  * Create handle and short bio (up to 120 characters).
-  * Profile ID mapped directly to the wallet address.
-  * Profile updates with ownership verification.
-  * Real-time character counters and input validations.
-* **Feedback & Rating Submissions**:
-  * 1–5 star rating with interactive selector.
-  * Unfiltered feedback messages (up to 280 characters).
-  * Sender address and block timestamp permanently stored on-chain.
-  * Smart contract enforcement: users cannot rate their own profile; one feedback per wallet per profile prevents spam.
-* **Feedback Dashboard & Controls**:
-  * View average rating (scaled calculation) and total reviews count.
-  * Profile owners can enable or pause feedback submissions at any time.
-  * Feedback history cards with on-chain verification tags and explorer links.
-* **Social Sharing**:
-  * Instant copy link for `/profile/0x...`.
-  * Browser native sharing API support (`navigator.share`).
-  * Community directory to discover other profiles on Botchain.
-* **Privacy & Content Safety**:
-  * Transparent warnings explaining that blockchain data is public and immutable.
-  * Safe design without passwords, emails, or private messages.
+### Botchain Mainnet
+| Parameter | Value |
+| :--- | :--- |
+| **Network Name** | Botchain Mainnet |
+| **Chain ID** | `677` |
+| **RPC URL** | `https://rpc.botchain.ai` |
+| **Explorer** | `https://scan.botchain.ai` |
+| **Native Token** | `BOT` |
+| **Deployed Contract** | [`0x2D08644ebAD640aAb1eB77148a540e47741F9738`](https://scan.botchain.ai/address/0x2D08644ebAD640aAb1eB77148a540e47741F9738#code) (Verified) |
 
----
-
-## 🛠️ Tech Stack
-
-* **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Lucide Icons
-* **Web3 Integration**: wagmi v2, viem v2, @tanstack/react-query
-* **Smart Contract**: Solidity 0.8.20, Hardhat, ethers.js v6, TypeChain
-* **Network**: Botchain Testnet (Chain ID `968`, Currency `BOHR`)
-
----
-
-## 🌐 Network Configuration (Botchain Testnet)
-
+### Botchain Testnet
 | Parameter | Value |
 | :--- | :--- |
 | **Network Name** | Botchain Testnet |
 | **Chain ID** | `968` |
 | **RPC URL** | `https://rpc.bohr.life` |
 | **Explorer** | `https://scan.bohr.life` |
+| **Currency** | `BOHR` |
+| **Deployed Contract** | [`0x350091F9Dc2C19a9e53cf702bD620B601d61C674`](https://scan.bohr.life/address/0x350091F9Dc2C19a9e53cf702bD620B601d61C674#code) (Verified) |
 | **Currency Symbol** | `BOHR` |
 
 ---

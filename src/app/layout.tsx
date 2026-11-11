@@ -30,13 +30,13 @@ export default function RootLayout({
               <div>
                 <p className="font-semibold text-soft-heading">RoastMe</p>
                 <p className="text-[11px] text-soft-muted mt-0.5">
-                  Decentralized on-chain feedback platform on Botchain Testnet (Chain ID 968).
+                  Decentralized on-chain feedback platform on Botchain Mainnet (Chain ID 677).
                 </p>
               </div>
 
               <div className="flex items-center gap-4 text-[11px]">
                 <a
-                  href="https://scan.bohr.life"
+                  href="https://scan.botchain.ai"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-accent-purple transition-colors"
@@ -45,7 +45,7 @@ export default function RootLayout({
                 </a>
                 <span>•</span>
                 <a
-                  href="https://rpc.bohr.life"
+                  href="https://rpc.botchain.ai"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-accent-purple transition-colors"
