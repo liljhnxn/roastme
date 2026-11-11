@@ -33,24 +33,34 @@ export default function RootLayout({
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-center md:justify-start gap-2.5">
                     <span className="font-bold text-base text-soft-heading">RoastMe</span>
-                    <span className="text-[11px] px-2 py-0.5 rounded-full bg-accent-purple/15 text-accent-purple border border-accent-purple/30 font-medium">
-                      Built on BOT Chain
-                    </span>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-charcoal-900 border border-subtle text-[11px] text-soft-heading font-medium">
+                      <img
+                        src="/botchain-logo.jpg"
+                        alt="BOT Chain"
+                        className="w-3.5 h-3.5 rounded object-cover"
+                      />
+                      <span>Built on BOT Chain</span>
+                    </div>
                   </div>
                   <p className="text-xs text-soft-muted max-w-md">
                     Decentralized on-chain feedback and reputation protocol on BOT Chain Mainnet (Chain ID: 677).
                   </p>
                 </div>
 
-                {/* BOT Chain Ecosystem Links */}
-                <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+                {/* BOT Chain Ecosystem Links with Logo in front */}
+                <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-medium">
                   <a
                     href="https://botchain.ai"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-900 border border-subtle hover:border-accent-purple/40 text-soft-light hover:text-white transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-charcoal-900 border border-subtle hover:border-accent-purple/50 text-soft-light hover:text-white transition-all shadow-sm group"
+                    title="Visit Official BOT Chain Website"
                   >
-                    <span className="w-2 h-2 rounded-full bg-accent-purple" />
+                    <img
+                      src="/botchain-logo.jpg"
+                      alt="BOT Chain"
+                      className="w-4 h-4 rounded object-cover shrink-0"
+                    />
                     <span>BOT Chain Website</span>
                   </a>
 
@@ -58,9 +68,14 @@ export default function RootLayout({
                     href="https://scan.botchain.ai"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-900 border border-subtle hover:border-accent-green/40 text-soft-light hover:text-white transition-all shadow-sm"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-charcoal-900 border border-subtle hover:border-accent-green/50 text-soft-light hover:text-white transition-all shadow-sm group"
+                    title="Open Official BOT Chain Explorer"
                   >
-                    <span className="w-2 h-2 rounded-full bg-accent-green" />
+                    <img
+                      src="/botchain-logo.jpg"
+                      alt="BOT Chain"
+                      className="w-4 h-4 rounded object-cover shrink-0"
+                    />
                     <span>BOT Chain Explorer</span>
                   </a>
 
@@ -68,9 +83,15 @@ export default function RootLayout({
                     href={`https://scan.botchain.ai/address/${ROASTME_CONTRACT_ADDRESS}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-900 border border-subtle hover:border-subtle-hover text-soft-muted hover:text-soft-heading transition-all"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-charcoal-900 border border-subtle hover:border-subtle-hover text-soft-muted hover:text-soft-heading transition-all"
+                    title="View Verified Mainnet Contract"
                   >
-                    <span>Verified Contract</span>
+                    <img
+                      src="/botchain-logo.jpg"
+                      alt="BOT Chain"
+                      className="w-4 h-4 rounded object-cover shrink-0 opacity-80"
+                    />
+                    <span>Mainnet Contract: {ROASTME_CONTRACT_ADDRESS.slice(0, 6)}...{ROASTME_CONTRACT_ADDRESS.slice(-4)}</span>
                   </a>
                 </div>
               </div>

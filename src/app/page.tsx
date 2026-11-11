@@ -100,7 +100,7 @@ export default function HomePage() {
         <div className="relative max-w-2xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-purple/10 border border-accent-purple/20 text-accent-purple text-xs font-medium">
             <Flame className="w-3.5 h-3.5 text-accent-purple" />
-            <span>Unfiltered, permanent on-chain reviews on Botchain</span>
+            <span>Unfiltered, permanent on-chain reviews on BOT Chain Mainnet</span>
           </div>
 
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-soft-heading leading-tight">
@@ -113,6 +113,32 @@ export default function HomePage() {
           <p className="text-soft-muted text-sm md:text-base leading-relaxed">
             Create your profile, share your personalized link, and let your peers, teammates, and visitors drop honest ratings and feedback directly on the blockchain.
           </p>
+
+          {/* BOT Chain & Verified Mainnet Contract Links on Interface */}
+          <div className="pt-1 flex flex-wrap items-center gap-2.5">
+            <a
+              href="https://botchain.ai"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-850 hover:bg-charcoal-800 border border-subtle hover:border-accent-purple/40 text-xs font-medium text-soft-light transition-all shadow-sm"
+              title="Official BOT Chain Website"
+            >
+              <img src="/botchain-logo.jpg" alt="BOT Chain" className="w-4 h-4 rounded object-cover shrink-0" />
+              <span>BOT Chain Website</span>
+            </a>
+
+            <a
+              href={`https://scan.botchain.ai/address/${ROASTME_CONTRACT_ADDRESS}`}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-850 hover:bg-charcoal-800 border border-subtle hover:border-accent-green/40 text-xs font-medium text-soft-light transition-all shadow-sm"
+              title="View Verified Mainnet Contract on BOT Chain Explorer"
+            >
+              <img src="/botchain-logo.jpg" alt="BOT Chain" className="w-4 h-4 rounded object-cover shrink-0" />
+              <span>Mainnet Contract: {ROASTME_CONTRACT_ADDRESS.slice(0, 6)}...{ROASTME_CONTRACT_ADDRESS.slice(-4)}</span>
+              <ExternalLink className="w-3 h-3 text-soft-muted" />
+            </a>
+          </div>
 
           {!isConnected ? (
             <div className="pt-2 flex items-center gap-3">
