@@ -65,6 +65,18 @@ export function Navbar() {
             </div>
           )}
 
+          {/* Mainnet Explorer Link on Interface */}
+          <a
+            href="https://scan.botchain.ai"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-charcoal-900 hover:bg-charcoal-850 border border-subtle hover:border-subtle-hover text-xs font-medium text-soft-light transition-all shadow-sm"
+            title="Open BOT Chain Mainnet Explorer"
+          >
+            <span>Explorer</span>
+            <ExternalLink className="w-3.5 h-3.5 text-soft-muted" />
+          </a>
+
           {/* Wallet Button */}
           {!isConnected ? (
             <button

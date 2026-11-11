@@ -1,31 +1,59 @@
 # 🔥 RoastMe — On-Chain Feedback & Rating Platform
 
-RoastMe is a modern, lightweight Web3 application deployed on **Botchain Mainnet** (and Botchain Testnet). It enables users to create on-chain profiles, share their unique links, and collect 1–5 star ratings and honest reviews directly on the blockchain.
+RoastMe is a modern, lightweight Web3 application deployed on **BOT Chain Mainnet**. It enables users to create on-chain profiles, share their unique links, and collect 1–5 star ratings and honest reviews directly on the blockchain.
+
+* **BOT Chain Website:** [https://botchain.ai](https://botchain.ai)
+* **BOT Chain Explorer:** [https://scan.botchain.ai](https://scan.botchain.ai)
 
 ---
 
-## 🌐 Network Configuration
+## 🌐 Network Configuration (BOT Chain Mainnet)
 
-### Botchain Mainnet
 | Parameter | Value |
 | :--- | :--- |
-| **Network Name** | Botchain Mainnet |
+| **Network Name** | BOT Chain Mainnet |
 | **Chain ID** | `677` |
 | **RPC URL** | `https://rpc.botchain.ai` |
 | **Explorer** | `https://scan.botchain.ai` |
 | **Native Token** | `BOT` |
+| **Total Supply** | 150 Million |
 | **Deployed Contract** | [`0x2D08644ebAD640aAb1eB77148a540e47741F9738`](https://scan.botchain.ai/address/0x2D08644ebAD640aAb1eB77148a540e47741F9738#code) (Verified) |
 
-### Botchain Testnet
-| Parameter | Value |
-| :--- | :--- |
-| **Network Name** | Botchain Testnet |
-| **Chain ID** | `968` |
-| **RPC URL** | `https://rpc.bohr.life` |
-| **Explorer** | `https://scan.bohr.life` |
-| **Currency** | `BOHR` |
-| **Deployed Contract** | [`0x350091F9Dc2C19a9e53cf702bD620B601d61C674`](https://scan.bohr.life/address/0x350091F9Dc2C19a9e53cf702bD620B601d61C674#code) (Verified) |
-| **Currency Symbol** | `BOHR` |
+---
+
+## 🚀 Features
+
+* **MetaMask Wallet Integration**: Smooth connection, shortened address display, network validation, and automated network switching to BOT Chain Mainnet.
+* **On-Chain Profiles**:
+  * Create handle and short bio (up to 120 characters).
+  * Profile ID mapped directly to the wallet address.
+  * Profile updates with ownership verification.
+  * Real-time character counters and input validations.
+* **Feedback & Rating Submissions**:
+  * 1–5 star rating with interactive selector.
+  * Unfiltered feedback messages (up to 280 characters).
+  * Sender address and block timestamp permanently stored on-chain.
+  * Smart contract enforcement: users cannot rate their own profile; one feedback per wallet per profile prevents spam.
+* **Feedback Dashboard & Controls**:
+  * View average rating (scaled calculation) and total reviews count.
+  * Profile owners can enable or pause feedback submissions at any time.
+  * Feedback history cards with on-chain verification tags and explorer links.
+* **Social Sharing**:
+  * Instant copy link for `/profile/0x...`.
+  * Browser native sharing API support (`navigator.share`).
+  * Community directory to discover other profiles on BOT Chain.
+* **Privacy & Content Safety**:
+  * Transparent warnings explaining that blockchain data is public and immutable.
+  * Safe design without passwords, emails, or private messages.
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Lucide Icons
+* **Web3 Integration**: wagmi v2, viem v2, @tanstack/react-query
+* **Smart Contract**: Solidity 0.8.20, Hardhat, ethers.js v6, TypeChain
+* **Network**: BOT Chain Mainnet (Chain ID `677`, Currency `BOT`)
 
 ---
 
@@ -33,9 +61,9 @@ RoastMe is a modern, lightweight Web3 application deployed on **Botchain Mainnet
 
 ### 1. Prerequisites
 
-* Node.js 18+ (tested on Node 20 / 25)
+* Node.js 18+
 * npm or pnpm
-* MetaMask browser extension
+* MetaMask browser extension connected to BOT Chain Mainnet
 
 ### 2. Install Dependencies
 
@@ -51,18 +79,18 @@ Create a `.env.local` file based on `.env.example`:
 cp .env.example .env.local
 ```
 
-Fill in the following variables:
+Fill in the variables:
 
 ```env
 # Smart Contract Deployment (Hardhat)
-BOTCHAIN_RPC_URL=https://rpc.bohr.life
+BOTCHAIN_MAINNET_RPC_URL=https://rpc.botchain.ai
 PRIVATE_KEY=your_private_key_here
 
 # Frontend Configuration (Next.js)
-NEXT_PUBLIC_CONTRACT_ADDRESS=your_deployed_contract_address
-NEXT_PUBLIC_BOTCHAIN_RPC_URL=https://rpc.bohr.life
-NEXT_PUBLIC_BOTCHAIN_CHAIN_ID=968
-NEXT_PUBLIC_BOTCHAIN_EXPLORER=https://scan.bohr.life
+NEXT_PUBLIC_CONTRACT_ADDRESS=0x2D08644ebAD640aAb1eB77148a540e47741F9738
+NEXT_PUBLIC_BOTCHAIN_RPC_URL=https://rpc.botchain.ai
+NEXT_PUBLIC_BOTCHAIN_CHAIN_ID=677
+NEXT_PUBLIC_BOTCHAIN_EXPLORER=https://scan.botchain.ai
 ```
 
 ---
@@ -94,18 +122,17 @@ Compile the contract:
 npm run compile
 ```
 
-Deploy `RoastMe.sol` to Botchain Testnet:
+Deploy `RoastMe.sol` to BOT Chain Mainnet:
 
 ```bash
 npm run deploy
 ```
 
 The deployment script automatically:
-1. Deploys `RoastMe.sol` to Botchain Testnet (`chainId: 968`).
+1. Deploys `RoastMe.sol` to BOT Chain Mainnet (`chainId: 677`) with optimized gas.
 2. Prints the deployed contract address.
-3. Exports the contract address and ABI to `src/contracts/deployedContract.json` and updates the ABI.
-
-Copy the resulting address into your `NEXT_PUBLIC_CONTRACT_ADDRESS` in `.env.local`.
+3. Automatically updates `.env.local` and exports the contract details to `src/contracts/deployedContract.json`.
+4. Submits contract source code for automatic verification on `https://scan.botchain.ai`.
 
 ---
 
@@ -133,4 +160,3 @@ npm start
 * All submissions (star ratings and review text) are submitted directly to the smart contract on the blockchain.
 * Feedback cannot be edited or deleted once confirmed on-chain.
 * Never share private keys, seed phrases, or personally identifying private information.
-

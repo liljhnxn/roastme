@@ -22,7 +22,7 @@ async function main() {
   const feeData = await ethers.provider.getFeeData();
   const gasPrice = feeData.gasPrice ?? ethers.parseUnits("20", "gwei");
 
-  console.log("Deployer Balance:", ethers.formatEther(balance), chainId === 677 ? "BOT" : "BOHR");
+  console.log("Deployer Balance:", ethers.formatEther(balance), "BOT");
   console.log("Network Gas Price:", ethers.formatUnits(gasPrice, "gwei"), "Gwei");
 
   if (balance === 0n) {
@@ -40,7 +40,7 @@ async function main() {
   console.log(
     "Estimated Max Deployment Cost:",
     ethers.formatEther(estimatedCost),
-    chainId === 677 ? "BOT" : "BOHR"
+    "BOT"
   );
 
   if (balance < estimatedCost) {
@@ -155,7 +155,7 @@ async function main() {
     }
   }
 
-  const explorerBase = chainId === 677 ? "https://scan.botchain.ai" : "https://scan.bohr.life";
+  const explorerBase = "https://scan.botchain.ai";
   console.log("\n🎉 Deployment completed!");
   console.log("Contract Address:", contractAddress);
   console.log("Explorer URL:", `${explorerBase}/address/${contractAddress}`);

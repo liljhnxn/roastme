@@ -35,13 +35,13 @@ export function formatDate(timestamp: bigint | number | undefined): string {
 
 export function getExplorerTxUrl(txHash?: string): string {
   if (!txHash) return "";
-  const base = process.env.NEXT_PUBLIC_BOTCHAIN_EXPLORER || "https://scan.bohr.life";
+  const base = process.env.NEXT_PUBLIC_BOTCHAIN_EXPLORER || "https://scan.botchain.ai";
   return `${base.replace(/\/$/, "")}/tx/${txHash}`;
 }
 
 export function getExplorerAddressUrl(address?: string): string {
   if (!address) return "";
-  const base = process.env.NEXT_PUBLIC_BOTCHAIN_EXPLORER || "https://scan.bohr.life";
+  const base = process.env.NEXT_PUBLIC_BOTCHAIN_EXPLORER || "https://scan.botchain.ai";
   return `${base.replace(/\/$/, "")}/address/${address}`;
 }
 

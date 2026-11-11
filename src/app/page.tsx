@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
-import { ROASTME_CONTRACT_ADDRESS, botchainTestnet } from "@/contracts/config";
+import { ROASTME_CONTRACT_ADDRESS, activeChain } from "@/contracts/config";
 import { ROASTME_ABI } from "@/contracts/RoastMeABI";
 import { StarRating } from "@/components/StarRating";
 import { FeedbackCard, FeedbackItem } from "@/components/FeedbackCard";
@@ -149,7 +149,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-soft-heading">You don&apos;t have a RoastMe profile yet</h3>
               <p className="text-sm text-soft-muted max-w-md mx-auto">
-                Register your handle and short bio on Botchain Testnet to receive 1–5 star ratings and reviews from the Web3 community.
+                Register your handle and short bio on BOT Chain to receive 1–5 star ratings and reviews from the Web3 community.
               </p>
               <button
                 onClick={() => setIsCreateOpen(true)}
